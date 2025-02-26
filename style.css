@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  font-family: "Inter", serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #E3E7EB;
+}
+
+.calculator {
+  background-color: #FFFFFF;
+  width: 282px;
+  height: 495px;
+  border-radius: 10px;
+  padding: 10px;
+  -webkit-box-shadow: 0px 14px 18.1px 0px rgba(53,63,84,0.1);
+  -moz-box-shadow: 0px 14px 18.1px 0px rgba(53,63,84,0.1);
+  box-shadow: 0px 14px 18.1px 0px rgba(53,63,84,0.1);
+}
+
+.screen {
+  color: #4469CA;
+  text-align: end;
+  font-size: 40px;
+  width: 262px;
+  height: 137px;
+  background: rgb(211,211,208);
+  background: linear-gradient(144deg, rgba(211,211,208,1) 0%, rgba(237,237,237,1) 100%); 
+  display: flex;
+  padding: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.prev-number {
+  font-size: 24px;
+  color: #4469CA80;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.btn {
+  background-color: rgb(237,237,237);
+  background: linear-gradient(180deg, rgba(237,237,237,1) 0%, rgba(211,211,211,1) 100%); 
+  padding: 3px;
+  border-radius: 5px;
+  color: rgba(65, 65, 65, 0.7);
+  transition: filter 0.15s;
+}
+
+.btn:hover {
+  filter: brightness(0.95)
+}
+
+.btn:active {
+  filter: brightness(0.83)
+}
+
+.btn .inner {
+  background-color: rgb(237,237,237);
+  background: linear-gradient(0deg, rgba(237,237,237,1) 0%, rgba(211,211,211,1) 100%); 
+  width: 58px;
+  height: 58px;
+  line-height: 58px;
+  border-radius: 999px;
+  text-align: center;
+}
+
+.btn.lighter {
+  background: rgb(237,237,237);
+  background: linear-gradient(0deg, rgba(237,237,237,0.30) 0%, rgba(211,211,211,0.30) 100%);
+}
+
+.btn.lighter .inner {
+  background: rgb(237,237,237);
+  background: linear-gradient(180deg, rgba(237,237,237,0.30) 0%, rgba(211,211,211,0.30) 100%);
+}
+
+.btn.blue {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgb(68,105,202);
+  background: linear-gradient(0deg, rgba(68,105,202,1) 0%, rgba(117,156,236,1) 100%); }
+
+.btn.blue .inner {
+  background: rgb(68,105,202);
+  background: linear-gradient(180deg, rgba(68,105,202,1) 0%, rgba(117,156,236,1) 100%); }
+
+
+.btn.long .inner {
+  width: 124px;
+}
