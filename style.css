@@ -44,6 +44,7 @@ body {
   align-items: flex-end;
   margin-bottom: 10px;
   border-radius: 5px;
+  line-height: 42px;
 }
 
 .prev-number {

@@ -4,10 +4,32 @@ let operationElement = document.querySelector('.operation')
 let calculatorElement = document.querySelector('.calculator');
 // let buttons = document.querySelectorAll('.btn');
 
+const initialFontSizes = new WeakMap();
+function adjustFontSize(element) {
+  const elementStyles = getComputedStyle(element); 
+
+  if (!initialFontSizes.has(element)) {
+    initialFontSizes.set(element, elementStyles.fontSize);
+  } else {
+    console.log(initialFontSizes.get(element));
+  }
+
+  let fontSize = Number.parseInt(initialFontSizes.get(element));
+  element.style.fontSize = fontSize + 'px';
+  let {clientWidth, scrollWidth} = element;
+  while (scrollWidth > clientWidth) {
+    element.style.fontSize = (--fontSize) + 'px';
+    clientWidth = element.clientWidth;
+    scrollWidth = element.scrollWidth;
+  }
+}
+
 function updateScreen() {
   currentNumberElement.textContent = currentNumber;
   prevNumberElement.textContent = prevNumber;
   operationElement.textContent = operation;
+
+  adjustFontSize(currentNumberElement);
 }
 
 function clearAll() {
@@ -26,7 +48,7 @@ function clear() {
 
 function putDigit(digit) {
   currentNumber = Number(currentNumber.toString() + digit);
-
+  // Come with some another way to do this becouse when we concatenate string to exponential number
   updateScreen();
 }
 
