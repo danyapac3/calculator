@@ -10,8 +10,6 @@ function adjustFontSize(element) {
 
   if (!initialFontSizes.has(element)) {
     initialFontSizes.set(element, elementStyles.fontSize);
-  } else {
-    console.log(initialFontSizes.get(element));
   }
 
   let fontSize = Number.parseInt(initialFontSizes.get(element));
@@ -33,7 +31,7 @@ function updateScreen() {
 }
 
 function clearAll() {
-  currentNumber = 0;
+  currentNumber = '0';
   prevNumber = null;
   operation = null;
 
@@ -41,19 +39,29 @@ function clearAll() {
 }
 
 function clear() {
-  currentNumber = 0;
+  currentNumber = '0';
 
   updateScreen();
 }
 
 function putDigit(digit) {
-  currentNumber = Number(currentNumber.toString() + digit);
-  // Come with some another way to do this becouse when we concatenate string to exponential number
+  if (currentNumber === 'Error') {
+    return;
+  }
+  if (currentNumber === '0' && digit !== '.') {
+    currentNumber = digit;
+  } else if (!(digit === '.' && currentNumber.includes('.'))) {
+    currentNumber += digit;
+  }
+  if (currentNumber.split('.').join('').length > 15 ||
+      Number.isNaN(Number(currentNumber))) {
+    currentNumber = 'Error';
+  }
   updateScreen();
 }
 
 // Global Variables
-let currentNumber = 0;
+let currentNumber = '0';
 let prevNumber = null; 
 let operation = null;
 
@@ -83,7 +91,8 @@ calculatorElement.addEventListener('click', ({target}) => {
     case '8':
     case '9':
     case '0':
-      putDigit(Number(btn.dataset.operation));
+    case '.':
+      putDigit(btn.dataset.operation);
       break;
     case 'clear':
       clear();
