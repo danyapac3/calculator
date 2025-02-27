@@ -16,13 +16,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #E3E7EB;
+  background-color: #9ca4ac;
 }
 
 .calculator {
   background-color: #FFFFFF;
   width: 282px;
-  height: 495px;
   border-radius: 10px;
   padding: 10px;
   -webkit-box-shadow: 0px 14px 18.1px 0px rgba(53,63,84,0.1);
@@ -40,7 +39,6 @@ body {
   background: linear-gradient(144deg, rgba(211,211,208,1) 0%, rgba(237,237,237,1) 100%); 
   display: flex;
   padding: 10px;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-content: flex-end;
   align-items: flex-end;
@@ -49,8 +47,23 @@ body {
 }
 
 .prev-number {
+  line-height: normal;
   font-size: 24px;
   color: #4469CA80;
+}
+
+.current-number {
+  overflow: hidden;
+}
+
+.operation {
+  flex-shrink: 0;
+}
+
+.numbers {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0px;
 }
 
 .btn-container {
@@ -105,7 +118,6 @@ body {
 .btn.blue .inner {
   background: rgb(68,105,202);
   background: linear-gradient(180deg, rgba(68,105,202,1) 0%, rgba(117,156,236,1) 100%); }
-
 
 .btn.long .inner {
   width: 124px;
