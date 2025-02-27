@@ -64,6 +64,7 @@ body {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0px;
+  max-width: 180px;
 }
 
 .btn-container {

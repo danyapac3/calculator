@@ -18,6 +18,12 @@ function clearAll() {
   updateScreen();
 }
 
+function clear() {
+  currentNumber = 0;
+
+  updateScreen();
+}
+
 function putDigit(digit) {
   currentNumber = Number(currentNumber.toString() + digit);
 
@@ -56,6 +62,10 @@ calculatorElement.addEventListener('click', ({target}) => {
     case '9':
     case '0':
       putDigit(Number(btn.dataset.operation));
-    break;
+      break;
+    case 'clear':
+      clear();
+    case 'clear-all':
+      clearAll();
   }
 });
