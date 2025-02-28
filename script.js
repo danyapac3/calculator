@@ -95,7 +95,7 @@ function calculate() {
   if (currentNumber === 'Error' || currentOperation === null) {
     return;
   }
-  result = '0';
+  result = 0;
 
   switch (currentOperation) {
     case '+':
@@ -112,8 +112,25 @@ function calculate() {
       break;
   }
 
+  let str = result.toString(); 
+  if (str.includes('.')) {
+    const maxDigits = 15;
+    const digitCount = str.match(/[0-9]/g).length;
+    let [integerPart, floatingPointPart] = str.split('.');
+    if (digitCount - floatingPointPart.length <= 15) {
+      const digitsToRemove = digitCount - maxDigits;  
+      floatingPointPart = floatingPointPart
+        .slice(0, floatingPointPart.length - digitsToRemove);
+    }
+    str = `${integerPart}.${floatingPointPart}`;
+    str = (str.at(-1) === '.')
+      ? str.replace('.', '')
+      : str;
+    alert(str);
+  }
+
   clearAll();
-  currentNumber = result.toString();
+  currentNumber = Number(str).toString();
 }
 
 // Global Variables
