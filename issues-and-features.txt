@@ -1,0 +1,3 @@
+there is issue when inverse zero to minus zero and than adding digits to it.
+leading zero stays even when there is no point after that.
+

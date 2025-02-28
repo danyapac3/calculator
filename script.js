@@ -26,7 +26,6 @@ function updateScreen() {
   currentNumberElement.textContent = currentNumber;
   prevNumberElement.textContent = prevNumber;
   operationElement.textContent = operation;
-
   adjustFontSize(currentNumberElement);
 }
 
@@ -34,30 +33,76 @@ function clearAll() {
   currentNumber = '0';
   prevNumber = null;
   operation = null;
-
   updateScreen();
 }
 
 function clear() {
   currentNumber = '0';
-
   updateScreen();
 }
 
 function putDigit(digit) {
-  if (currentNumber === 'Error') {
+  if (currentNumber === 'Error') return;
+  if (digit === 'inverse') {
+    currentNumber = (currentNumber.at(0) === '-')
+      ? currentNumber.split('-').join('')
+      : '-' + currentNumber;
+    updateScreen();
     return;
   }
+ 
   if (currentNumber === '0' && digit !== '.') {
     currentNumber = digit;
   } else if (!(digit === '.' && currentNumber.includes('.'))) {
     currentNumber += digit;
   }
-  if (currentNumber.split('.').join('').length > 15 ||
-      Number.isNaN(Number(currentNumber))) {
+
+  const digits = currentNumber
+  .split('.').join('')
+  .split('-').join('');
+  console.log(currentNumber);
+  if (digits.length > 15 || Number.isNaN(Number(currentNumber))) {
     currentNumber = 'Error';
   }
   updateScreen();
+}
+
+function operate(char) {
+  if (prevNumber === null) {
+    prevNumber = currentNumber;
+    currentNumber = '0';
+  }
+  operation = char;
+
+  updateScreen();
+}
+
+function calculate() {
+  if (currentNumber === 'Error' || operation === null) {
+    return;
+  }
+  result = '0';
+
+  switch (operation) {
+    case '+':
+      result = Number(currentNumber) + Number(prevNumber);
+      break;
+    case '-':
+      result = Number(prevNumber) - Number(currentNumber);
+      break;
+    case '*':
+      result = Number(prevNumber) * Number(currentNumber);
+      break;
+    case '/':
+      result = Number(prevNumber) / Number(currentNumber);
+      break;
+  }
+
+  operation = null;
+  prevNumber = null;
+  currentNumber = result.toString();
+  updateScreen();
+
 }
 
 // Global Variables
@@ -92,11 +137,23 @@ calculatorElement.addEventListener('click', ({target}) => {
     case '9':
     case '0':
     case '.':
+    case 'inverse':
       putDigit(btn.dataset.operation);
+      break;
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+      operate(btn.dataset.operation);
+      break;
+    case '=':
+      calculate();
       break;
     case 'clear':
       clear();
+      break;
     case 'clear-all':
       clearAll();
+      break;
   }
 });
