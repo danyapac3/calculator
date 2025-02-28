@@ -131,8 +131,10 @@ calculatorElement.addEventListener('click', ({target}) => {
   // Look for btn
   if (target.classList.contains('btn')) {
     btn = target;
+    navigator.vibrate(50);
   } else if (target.parentElement.classList.contains('btn')) {
     btn = target.parentElement;
+    navigator.vibrate(50);
   } else {
     return;
   }
