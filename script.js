@@ -126,7 +126,6 @@ function calculate() {
     str = (str.at(-1) === '.')
       ? str.replace('.', '')
       : str;
-    alert(str);
   }
 
   clearAll();
