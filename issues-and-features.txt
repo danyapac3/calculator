@@ -1,3 +1,4 @@
-there is issue when inverse zero to minus zero and than adding digits to it.
+1) there is issue when inverse zero to minus zero and than adding digits to it.
 leading zero stays even when there is no point after that.
 
+2) Issue for numbers with long number after floating point. 

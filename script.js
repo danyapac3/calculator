@@ -4,6 +4,17 @@ let operationElement = document.querySelector('.operation')
 let calculatorElement = document.querySelector('.calculator');
 // let buttons = document.querySelectorAll('.btn');
 
+/**
+* @param {string} number;
+* @return {string}
+*/
+function formatNumber(number) {
+  const digitsLimit = 15;
+  
+  // remove leading zeros
+
+}
+
 const initialFontSizes = new WeakMap();
 function adjustFontSize(element) {
   const elementStyles = getComputedStyle(element); 
@@ -23,22 +34,32 @@ function adjustFontSize(element) {
 }
 
 function updateScreen() {
+  const digits = currentNumber
+  .split('.').join('')
+  .split('-').join('');
+  if (
+    digits.length > 15 
+    || Number.isNaN(Number(currentNumber))
+    || currentNumber === 'Infinity'
+  ) {
+    currentNumber = 'Error';
+  }
+
   currentNumberElement.textContent = currentNumber;
   prevNumberElement.textContent = prevNumber;
-  operationElement.textContent = operation;
+  operationElement.textContent = currentOperation;
+  adjustFontSize(prevNumberElement);
   adjustFontSize(currentNumberElement);
 }
 
 function clearAll() {
   currentNumber = '0';
   prevNumber = null;
-  operation = null;
-  updateScreen();
+  currentOperation = null;
 }
 
 function clear() {
   currentNumber = '0';
-  updateScreen();
 }
 
 function putDigit(digit) {
@@ -47,43 +68,36 @@ function putDigit(digit) {
     currentNumber = (currentNumber.at(0) === '-')
       ? currentNumber.split('-').join('')
       : '-' + currentNumber;
-    updateScreen();
-    return;
+    return
   }
  
   if (currentNumber === '0' && digit !== '.') {
     currentNumber = digit;
+  }else if (currentNumber === '-0' && digit !== '.') {
+      currentNumber = digit;
   } else if (!(digit === '.' && currentNumber.includes('.'))) {
     currentNumber += digit;
   }
-
-  const digits = currentNumber
-  .split('.').join('')
-  .split('-').join('');
-  console.log(currentNumber);
-  if (digits.length > 15 || Number.isNaN(Number(currentNumber))) {
-    currentNumber = 'Error';
-  }
-  updateScreen();
 }
 
 function operate(char) {
+  if (currentNumber === 'Error') {
+    return;
+  }
   if (prevNumber === null) {
     prevNumber = currentNumber;
     currentNumber = '0';
   }
-  operation = char;
-
-  updateScreen();
+  currentOperation = char;
 }
 
 function calculate() {
-  if (currentNumber === 'Error' || operation === null) {
+  if (currentNumber === 'Error' || currentOperation === null) {
     return;
   }
   result = '0';
 
-  switch (operation) {
+  switch (currentOperation) {
     case '+':
       result = Number(currentNumber) + Number(prevNumber);
       break;
@@ -98,20 +112,18 @@ function calculate() {
       break;
   }
 
-  operation = null;
-  prevNumber = null;
+  clearAll();
   currentNumber = result.toString();
-  updateScreen();
-
 }
 
 // Global Variables
 let currentNumber = '0';
 let prevNumber = null; 
-let operation = null;
+let currentOperation = null;
 
 // Init calculator
-clearAll()
+clearAll();
+updateScreen();
 
 calculatorElement.addEventListener('click', ({target}) => {
   let btn = null;
@@ -125,26 +137,15 @@ calculatorElement.addEventListener('click', ({target}) => {
     return;
   }
 
-  switch(btn.dataset.operation) {
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '0':
-    case '.':
-    case 'inverse':
-      putDigit(btn.dataset.operation);
+  const operation = btn.dataset.operation;
+  switch(operation) {
+    case '1': case '2': case '3': case '4': case '5':
+    case '6': case '7': case '8': case '9': case '0':
+    case '.': case 'inverse':
+      putDigit(operation);
       break;
-    case '+':
-    case '-':
-    case '*':
-    case '/':
-      operate(btn.dataset.operation);
+    case '+': case '-': case '*': case '/':
+      operate(operation);
       break;
     case '=':
       calculate();
@@ -156,4 +157,6 @@ calculatorElement.addEventListener('click', ({target}) => {
       clearAll();
       break;
   }
+
+  updateScreen();
 });
