@@ -41,6 +41,7 @@ function updateScreen() {
     digits.length > 15 
     || Number.isNaN(Number(currentNumber))
     || currentNumber === 'Infinity'
+    || currentNumber === '-Infinity'
   ) {
     currentNumber = 'Error';
   }
