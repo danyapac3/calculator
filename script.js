@@ -112,9 +112,10 @@ function calculate() {
 
   clearAll();
 
-  const digitCount = str.match(/[0-9]/g).length
+  const digitCount = str.match(/[0-9]/g)?.length
   if (
-    digitCount > 15 
+    digitCount === undefined
+    || digitCount > 15 
     || Number.isNaN(Number(str))
     || str === 'Infinity'
     || str === '-Infinity'
