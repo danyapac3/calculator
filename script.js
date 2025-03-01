@@ -2,18 +2,6 @@ let currentNumberElement = document.querySelector('.current-number');
 let prevNumberElement = document.querySelector('.prev-number');
 let operationElement = document.querySelector('.operation')
 let calculatorElement = document.querySelector('.calculator');
-// let buttons = document.querySelectorAll('.btn');
-
-/**
-* @param {string} number;
-* @return {string}
-*/
-function formatNumber(number) {
-  const digitsLimit = 15;
-  
-  // remove leading zeros
-
-}
 
 const initialFontSizes = new WeakMap();
 function adjustFontSize(element) {
@@ -34,18 +22,6 @@ function adjustFontSize(element) {
 }
 
 function updateScreen() {
-  const digits = currentNumber
-  .split('.').join('')
-  .split('-').join('');
-  if (
-    digits.length > 15 
-    || Number.isNaN(Number(currentNumber))
-    || currentNumber === 'Infinity'
-    || currentNumber === '-Infinity'
-  ) {
-    currentNumber = 'Error';
-  }
-
   currentNumberElement.textContent = currentNumber;
   prevNumberElement.textContent = prevNumber;
   operationElement.textContent = currentOperation;
@@ -64,13 +40,15 @@ function clear() {
 }
 
 function putDigit(digit) {
-  if (currentNumber === 'Error') return;
+  const digitCount = currentNumber.match(/[0-9]/g).length;
+  if (currentNumber === 'Error' || digitCount >= 15) return;
   if (digit === 'inverse') {
     currentNumber = (currentNumber.at(0) === '-')
       ? currentNumber.split('-').join('')
       : '-' + currentNumber;
     return
   }
+
  
   if (currentNumber === '0' && digit !== '.') {
     currentNumber = digit;
@@ -88,6 +66,9 @@ function operate(char) {
   if (prevNumber === null) {
     prevNumber = currentNumber;
     currentNumber = '0';
+  } else {
+    calculate();
+    operate(char);
   }
   currentOperation = char;
 }
@@ -115,8 +96,8 @@ function calculate() {
 
   let str = result.toString(); 
   if (str.includes('.')) {
-    const maxDigits = 15;
     const digitCount = str.match(/[0-9]/g).length;
+    const maxDigits = 15;
     let [integerPart, floatingPointPart] = str.split('.');
     if (digitCount - floatingPointPart.length <= 15) {
       const digitsToRemove = digitCount - maxDigits;  
@@ -130,7 +111,19 @@ function calculate() {
   }
 
   clearAll();
-  currentNumber = Number(str).toString();
+
+  const digitCount = str.match(/[0-9]/g).length
+  if (
+    digitCount > 15 
+    || Number.isNaN(Number(str))
+    || str === 'Infinity'
+    || str === '-Infinity'
+  ) {
+    str = 'Error';
+    currentNumber = str;
+  } else {
+    currentNumber = Number(str).toString();
+  }
 }
 
 // Global Variables
@@ -148,23 +141,26 @@ calculatorElement.addEventListener('click', ({target}) => {
   // Look for btn
   if (target.classList.contains('btn')) {
     btn = target;
-    if ('vibrate' in navigator) navigator.vibrate(50);
   } else if (target.parentElement.classList.contains('btn')) {
     btn = target.parentElement;
-    if ('vibrate' in navigator) navigator.vibrate(50);
   } else {
     return;
   }
 
-  const operation = btn.dataset.operation;
-  switch(operation) {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(50);
+  } 
+    
+
+  const choosenOperation = btn.dataset.operation;
+  switch(choosenOperation) {
     case '1': case '2': case '3': case '4': case '5':
     case '6': case '7': case '8': case '9': case '0':
     case '.': case 'inverse':
-      putDigit(operation);
+      putDigit(choosenOperation);
       break;
     case '+': case '-': case '*': case '/':
-      operate(operation);
+      operate(choosenOperation);
       break;
     case '=':
       calculate();
